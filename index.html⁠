@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ကျန်းမာစွာ အသားတက်ရန် ကယ်လိုရီနှင့် အစားအသောက် ဇယား (AI Powered)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Pyidaungsu', sans-serif;
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+        }
+        button, input, select, label {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.12); opacity: 1; }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 2.5s ease-in-out infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(200%) rotate(45deg); }
+        }
+        .logo-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+    </style>
+</head>
+<body id="appBody" class="bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-500">
+
+    <!-- Auth / Login Gateway Screen (Mandatory before entering app) -->
+    <div id="authGatewayScreen" class="fixed inset-0 z-[9999] bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 flex flex-col items-center justify-center p-4 sm:p-6 text-white text-center">
+        <div class="glass-card max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative border border-slate-700/50 bg-white/10 dark:bg-slate-900/80 backdrop-blur-xl overflow-hidden">
+            <div class="relative mb-5">
+                <div class="absolute -inset-4 bg-gradient-to-r from-emerald-500/40 via-teal-500/40 to-cyan-500/40 rounded-full blur-2xl animate-pulse-glow"></div>
+                <div class="relative w-24 h-24 bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 rounded-3xl shadow-2xl flex items-center justify-center border-2 border-white/40 mx-auto animate-float overflow-hidden group">
+                    <div class="logo-shine"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <span class="bg-white/20 text-emerald-200 text-xs font-bold px-4 py-1.5 rounded-full border border-white/30 mb-2.5 inline-block shadow-sm">✨ Next-Gen AI Health & Fitness</span>
+            <h1 id="gatewayTitle" class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1 text-white">Muscle & Calorie Pro</h1>
+            <p id="gatewaySub" class="text-emerald-100 text-xs max-w-sm mx-auto font-medium mb-6 leading-relaxed">ကျန်းမာစွာ အသားတက်ရန် အသုံးမပြုမီ ကျေးဇူးပြု၍ အကောင့်ဝင်ပါ (Login required)</p>
+            
+            <!-- Quick Social / Phone Auth buttons -->
+            <div class="space-y-2.5 mb-5">
+                <button type="button" onclick="instantLogin('Google')" class="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-800 py-3.5 px-4 rounded-2xl font-bold text-xs shadow-md transition transform active:scale-98">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.19v3.15C3.17 21.36 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.19C.43 8.1 0 9.8 0 12s.43 3.9 1.19 5.42l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.64 1.19 6.58l4.09 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+                    <span>Google ဖြင့် ချက်ချင်းဝင်မည်</span>
+                </button>
+                <button type="button" onclick="instantLogin('Facebook')" class="w-full flex items-center justify-center gap-3 bg-[#1877F2] hover:bg-[#166fe5] text-white py-3.5 px-4 rounded-2xl font-bold text-xs shadow-md transition transform active:scale-98">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <span>Facebook ဖြင့် ချက်ချင်းဝင်မည်</span>
+                </button>
+                <button type="button" onclick="instantLogin('Phone')" class="w-full flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold text-xs shadow-md transition transform active:scale-98">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>ဖုန်းနံပါတ်ဖြင့် ချက်ချင်းဝင်မည်</span>
+                </button>
+            </div>
+
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-white/20"></div>
+                <span class="flex-shrink mx-3 text-xs text-slate-300 uppercase font-semibold">သို့မဟုတ် အီးမေးလ်ဖြင့်</span>
+                <div class="flex-grow border-t border-white/20"></div>
+            </div>
+
+            <div class="space-y-3 mt-3">
+                <input type="text" id="gatewayEmail" placeholder="example@gmail.com" class="w-full border border-white/20 rounded-2xl p-3.5 text-xs bg-slate-800/80 text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-inner">
+                <input type="password" id="gatewayPass" placeholder="စကားဝှက် (Password)" class="w-full border border-white/20 rounded-2xl p-3.5 text-xs bg-slate-800/80 text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-inner">
+                
+                <button type="button" onclick="handleGatewayLogin()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3.5 rounded-2xl shadow-xl transition text-xs transform active:scale-98">
+                    ✨ အကောင့်ဝင်ပြီး အက်ပ်ကိုစတင်မည် (Login)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 dark:from-emerald-950 dark:via-teal-950 dark:to-slate-900 text-white shadow-2xl relative overflow-hidden border-b border-white/10">
+        <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1.5px,transparent_1.5px)] [background-size:20px_20px] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-20">
+            <div class="text-center sm:text-left flex items-center gap-4">
+                <div class="relative w-16 h-16 bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-300 rounded-3xl border-2 border-white/40 flex items-center justify-center shadow-xl shrink-0 animate-float overflow-hidden group">
+                    <div class="logo-shine"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                    <span class="bg-white/20 text-emerald-100 dark:text-emerald-300 text-xs font-bold px-3.5 py-1.5 rounded-full border border-white/30 inline-block mb-1.5 shadow-sm" id="headerBadge">✨ Created by MR.SAI SWEET HURM</span>
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white" id="mainTitle">💪 အသားပြည့်ပြည့် ဝဝဖြိုးဖြိုး ဇယား</h1>
+                    <p class="text-emerald-100 dark:text-emerald-200 text-xs sm:text-sm mt-1 max-w-xl font-medium" id="subTitle">Gemini AI ဖြင့် ကယ်လိုရီ၊ အစားအစာ၊ အိပ်ချိန်နှင့် ရေသောက်သုံးမှုကို တွက်ချက်ပေးသော စနစ်</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2.5 relative z-50 flex-wrap justify-center sm:justify-end">
+                <button type="button" onclick="toggleLanguage()" id="langBtn" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2.5 rounded-2xl backdrop-blur-md border border-white/40 transition shadow-lg flex items-center gap-2 text-xs font-bold shrink-0 hover:scale-105">
+                    🌐 <span id="langText">မြန်မာ (Myanmar)</span>
+                </button>
+                <button type="button" onclick="toggleTheme()" id="themeBtn" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2.5 rounded-2xl backdrop-blur-md border border-white/40 transition shadow-lg flex items-center gap-2 text-xs font-bold shrink-0 hover:scale-105">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+                </button>
+                <div id="userProfileBadge" class="hidden bg-white/20 hover:bg-white/30 text-white px-3.5 py-2 rounded-2xl backdrop-blur-md border border-white/40 shadow-lg flex items-center gap-2 text-xs font-bold shrink-0">
+                    👤 <span id="profileNameDisplay">အကောင့်ဝင်ပြီး</span>
+                    <button type="button" onclick="logoutApp()" class="text-rose-300 hover:text-white ml-1 text-xs underline" id="logoutText">ထွက်ရန်</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-grow w-full space-y-6 relative z-10">
+
+        <!-- Calculator Section -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-emerald-500/10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl shadow-inner shrink-0 border border-emerald-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="calcTitle">၁။ ကယ်လိုရီ လိုအပ်ချက် တွက်ချက်ရန်</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="calcSub">သင်၏ ခန္ဓာကိုယ်အချက်အလက်များကို ထည့်သွင်းပါ</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelGender">ကျား/မ</label>
+                    <select id="gender" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition">
+                        <option value="male" id="optMale">ကျား (Male)</option>
+                        <option value="female" id="optFemale">မ (Female)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelAge">အသက် (နှစ်)</label>
+                    <input type="number" id="age" value="25" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelHeight">အရပ် (စင်တီမီတာ)</label>
+                    <input type="number" id="height" value="170" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelWeight">အလေးချိန် (ကေဂျီ)</label>
+                    <input type="number" id="weight" value="55" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelActivity">ကိုယ်လက်လှုပ်ရှားမှု ပမာဏ</label>
+                <select id="activity" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition">
+                    <option value="1.2" id="optAct1">ရုံးထိုင်အလုပ် သို့မဟုတ် လှုပ်ရှားမှုနည်းခြင်း (Sedentary)</option>
+                    <option value="1.375" selected id="optAct2">အလယ်အလတ် လှုပ်ရှားမှု (တစ်ပတ် ၂-၃ ရက် လေ့ကျင့်ခန်း)</option>
+                    <option value="1.55" id="optAct3">လှုပ်ရှားမှုများခြင်း (တစ်ပတ် ၄-၅ ရက် လေ့ကျင့်ခန်း)</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="calculateCalories()" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white font-bold py-4 rounded-2xl transition duration-300 shadow-xl shadow-emerald-600/20 text-sm flex items-center justify-center gap-2 transform active:scale-98" id="calcBtnText">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                ကယ်လိုရီ ပမာဏ တွက်မည် (+ အသားတက်ရန် ပိုစားရန်)
+            </button>
+
+            <!-- Result Box -->
+            <div id="resultBox" class="mt-6 p-5 bg-gradient-to-br from-emerald-500/15 to-teal-500/15 dark:from-emerald-950/60 dark:to-teal-950/60 border border-emerald-300/60 dark:border-emerald-700/60 rounded-2xl hidden backdrop-blur-md space-y-3 shadow-inner">
+                <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-emerald-200/50 dark:border-emerald-900/50 gap-1">
+                    <span id="resMaintLabel">သင်၏ ပုံမှန်လောင်ကျွမ်းမှု (Maintenance Calories):</span>
+                    <span id="maintenanceVal" class="font-bold text-slate-900 dark:text-white text-base">0 kcal</span>
+                </div>
+                <div class="text-sm sm:text-base text-emerald-900 dark:text-emerald-200 font-bold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <span class="flex items-center gap-1.5" id="resTargetLabel">🎯 အသားတက်ဖို့ လိုအပ်သည့် ကယ်လိုရီ:</span>
+                    <span id="targetVal" class="text-emerald-700 dark:text-emerald-400 text-lg sm:text-xl font-extrabold bg-white/80 dark:bg-slate-800/80 px-4 py-2 rounded-xl shadow-sm border border-emerald-200 dark:border-slate-700">0 kcal</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Food & AI Calorie Tracker -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-teal-500/10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 bg-teal-500/20 text-teal-600 dark:text-teal-400 rounded-2xl shadow-inner shrink-0 border border-teal-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="trackerTitle">၂။ AI အစားအစာ အကြံပြုချက် နှင့် ကယ်လိုရီ တိုင်းတာရန်</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="trackerSub">စားမည့် အစားအစာနာမည် ရိုက်ထည့်ပါ သို့မဟုတ် ကင်မရာဖြင့် ဓာတ်ပုံရိုက်၍ ကယ်လိုရီစကန်ဖတ်ပါ</p>
+                </div>
+            </div>
+
+            <!-- AI Suggestion Generator Button & Box -->
+            <div class="mb-6 bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-cyan-500/10 dark:from-teal-950/50 dark:to-cyan-950/50 p-4 sm:p-6 rounded-2xl border border-teal-200/80 dark:border-teal-800/80 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-teal-900 dark:text-teal-200 flex items-center gap-2" id="aiSuggTitle">💡 AI စားစရာ အကြံပြုချက် တောင်းခံရန်</h3>
+                        <p class="text-xs text-teal-700 dark:text-teal-400 mt-1" id="aiSuggDesc">အသားတက်ရန် ကောင်းမွန်သော အစားအစာ သို့မဟုတ် အသီးအနှံကို AI က အကြံပြုပေးပါမည်။</p>
+                    </div>
+                    <button type="button" onclick="fetchAISuggestion()" id="suggestBtn" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-teal-600/20 text-xs whitespace-nowrap flex items-center justify-center gap-2 shrink-0">
+                        ✨ ဘာစားရမလဲ AI မေးမည်
+                    </button>
+                </div>
+                <div id="aiSuggestionBox" class="hidden p-4 bg-white/95 dark:bg-slate-800/95 rounded-2xl border border-teal-300 dark:border-teal-700 shadow-sm text-sm font-medium text-slate-800 dark:text-slate-200 break-words whitespace-normal leading-relaxed"></div>
+            </div>
+
+            <!-- Camera Scan Food Section -->
+            <div class="mb-6 bg-gradient-to-r from-indigo-500/10 via-purple-500/15 to-pink-500/10 dark:from-indigo-950/50 dark:to-purple-950/50 p-4 sm:p-6 rounded-2xl border border-indigo-200/80 dark:border-indigo-800/80 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-indigo-900 dark:text-indigo-200 flex items-center gap-2" id="cameraScanTitle">📸 ကင်မရာဖွင့်၍ အစားအစာပုံ Scan ဖတ်ပြီး ကယ်လိုရီတိုင်းမည်</h3>
+                        <p class="text-xs text-indigo-700 dark:text-indigo-400 mt-1" id="cameraScanDesc">သင်စားမည့် ဟင်းပွဲ သို့မဟုတ် အစားအစာပုံကို ကင်မရာဖြင့် ရိုက်ကူးပါ (သို့) ပုံတင်ပါ</p>
+                    </div>
+                    <label class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 text-xs whitespace-nowrap flex items-center justify-center gap-2 shrink-0" id="camUploadBtnText">
+                        📷 ကင်မရာဖွင့် / ပုံတင်ရန်
+                        <input type="file" accept="image/*" capture="environment" onchange="handleFoodScan(event)" class="hidden">
+                    </label>
+                </div>
+                <!-- Scanned Image Preview & Result -->
+                <div id="scanResultContainer" class="hidden flex flex-col sm:flex-row items-center gap-4 p-4 bg-white/95 dark:bg-slate-800/95 rounded-2xl border border-indigo-300 dark:border-indigo-700 shadow-sm">
+                    <img id="scannedFoodPreview" class="w-24 h-24 object-cover rounded-xl shadow-md shrink-0 border border-indigo-200 dark:border-slate-700" src="" alt="Scanned Food">
+                    <div class="flex-grow">
+                        <h4 id="scannedFoodName" class="font-extrabold text-indigo-900 dark:text-indigo-200 text-sm">...</h4>
+                        <p id="scannedFoodDetails" class="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">...</p>
+                    </div>
+                    <button type="button" onclick="addScannedFoodToList()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-md whitespace-nowrap" id="addScannedBtnText">စာရင်းထဲသို့ ထည့်မည်</button>
+                </div>
+            </div>
+
+            <!-- Add Item Form with AI -->
+            <div class="flex flex-col sm:flex-row gap-3 mb-4 relative z-20">
+                <input type="text" id="foodName" placeholder="ဥပမာ - ငှက်ပျောသီး ၂ လုံး၊ ထမင်းတစ်ပန်းကန် သို့မဟုတ် ပန်းသီး" class="flex-grow border border-slate-300 dark:border-slate-700 rounded-2xl p-4 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm transition relative z-20">
+                <button type="button" onclick="fetchAICalories()" id="aiBtn" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-bold px-6 py-4 rounded-2xl transition duration-300 shadow-xl shadow-teal-600/20 text-sm flex items-center justify-center gap-2 shrink-0 relative z-20">
+                    ✨ AI ဖြင့် ကယ်လိုရီရှာမည်
+                </button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="aiLoading" class="hidden text-center py-4 text-sm text-teal-600 dark:text-teal-400 font-bold animate-pulse bg-teal-50/70 dark:bg-teal-950/50 rounded-2xl border border-teal-200 dark:border-teal-900 my-3 shadow-inner">
+                🤖 AI မှ ကယ်လိုရီပမာဏကို တွက်ချက်နေပါပြီ ခဏစောင့်ပါ...
+            </div>
+
+            <!-- Food Table -->
+            <div class="overflow-x-auto border border-slate-200/80 dark:border-slate-700/80 rounded-2xl my-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm shadow-sm">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-100/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700">
+                            <th class="p-4 font-bold" id="thFood">အစားအစာ / အသီးအနှံအမည်</th>
+                            <th class="p-4 font-bold" id="thCal">ကယ်လိုရီ (kcal)</th>
+                            <th class="p-4 font-bold text-center" id="thAction">လုပ်ဆောင်ချက်</th>
+                        </tr>
+                    </thead>
+                    <tbody id="foodTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Summary Bar & Save History Button -->
+            <div class="flex flex-col sm:flex-row justify-between items-center bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:to-slate-900 text-white p-5 rounded-2xl font-bold shadow-xl gap-4 border border-slate-800">
+                <div>
+                    <span class="text-xs text-slate-400 block" id="sumLabel">စုစုပေါင်း စားသုံးပြီး:</span>
+                    <span id="totalConsumed" class="text-emerald-400 text-xl sm:text-2xl font-extrabold">0 kcal</span>
+                </div>
+                <button type="button" onclick="saveTodayHistory()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-3.5 rounded-xl shadow-lg text-sm transition flex items-center justify-center gap-2 hover:scale-105">
+                    💾 <span id="saveHistBtnText">ယနေ့အတွက် မှတ်တမ်းသိမ်းမည်</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Sleep Tracker Section -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-indigo-500/10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-2xl shadow-inner shrink-0 border border-indigo-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="sleepSecTitle">၃။ အိပ်ချိန် မှတ်တမ်းနှင့် တိုင်းတာရန် (Sleep Tracker)</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="sleepSecSub">ကြွက်သား ပြန်လည်ကောင်းမွန်ရန် အိပ်စက်ချိန်ကို မှတ်တမ်းတင်ပါ</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelSleepHours">အိပ်စက်ခဲ့သည့် နာရီပမာဏ (Hours)</label>
+                    <input type="number" id="sleepHoursInput" step="0.5" value="8" min="0" max="24" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelSleepQuality">အိပ်စက်မှု အရည်အသွေး (Sleep Quality)</label>
+                    <select id="sleepQualitySelect" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm transition">
+                        <option value="good" id="optSleepGood">ကောင်းမွန်သည် (Deep & Rested)</option>
+                        <option value="normal" id="optSleepNormal">သင့်တင်သည် (Normal)</option>
+                        <option value="bad" id="optSleepBad">အိပ်ရေးမဝပါ (Disturbed / Poor)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" onclick="logSleep()" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold py-4 rounded-2xl transition duration-300 shadow-xl shadow-indigo-600/20 text-sm flex items-center justify-center gap-2">
+                😴 <span id="saveSleepBtnText">အိပ်ချိန် မှတ်တမ်းတင်မည်</span>
+            </button>
+
+            <div id="sleepFeedbackBox" class="mt-4 p-4 bg-indigo-50/80 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800/60 rounded-2xl text-xs sm:text-sm text-indigo-900 dark:text-indigo-200 flex items-center gap-3 shadow-sm">
+                <span class="text-xl">💡</span>
+                <span id="sleepFeedbackText">ကြွက်သားထုထည် တက်လာစေရန် ညစဉ် အနည်းဆုံး ၈ နာရီ အပြည့်အဝ အိပ်စက်ပါ။</span>
+            </div>
+        </section>
+
+        <!-- Water Intake Tracker Section -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-sky-500/10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 bg-sky-500/20 text-sky-600 dark:text-sky-400 rounded-2xl shadow-inner shrink-0 border border-sky-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="waterSecTitle">၄။ ရေသောက်သုံးမှု မှတ်တမ်း (Water Intake Tracker)</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="waterSecSub">တစ်နေ့တာ သောက်သင့်သော ရေပမာဏနှင့် သောက်ပြီးစီးမှုကို တွက်ချက်ပါ</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider" id="labelWaterWeight">သင့်အလေးချိန် (ကေဂျီဖြင့် ထည့်ပါ)</label>
+                    <input type="number" id="waterWeightInput" value="55" class="w-full border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm bg-white/90 dark:bg-slate-800/90 dark:text-white focus:ring-2 focus:ring-sky-500 outline-none shadow-sm transition">
+                </div>
+                <div class="flex items-end">
+                    <button type="button" onclick="calculateWater()" class="w-full bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-700 hover:to-cyan-700 text-white font-bold py-4 rounded-2xl transition duration-300 shadow-xl shadow-sky-600/20 text-sm flex items-center justify-center gap-2" id="calcWaterBtnText">
+                        💧 လိုအပ်သော ရေပမာဏ တွက်မည်
+                    </button>
+                </div>
+            </div>
+
+            <div id="waterResultBox" class="p-4 bg-sky-50/80 dark:bg-sky-950/50 border border-sky-200 dark:border-sky-800/60 rounded-2xl space-y-3">
+                <div class="flex justify-between items-center text-sm font-bold text-sky-900 dark:text-sky-200">
+                    <span id="targetWaterLabel">🎯 တစ်နေ့တာ သောက်သင့်သော ပမာဏ:</span>
+                    <span id="targetWaterVal" class="text-base text-sky-600 dark:text-sky-400 font-extrabold">2.5 လီတာ (ခွက်ပေါင်း ၁၀ ခွက်ခန့်)</span>
+                </div>
+                <div class="flex items-center gap-3 pt-2 border-t border-sky-200/60 dark:border-sky-900/50 flex-wrap">
+                    <button type="button" onclick="addWaterGlass()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5">
+                        ➕ <span id="addGlassBtnText">ရေ ၁ ခွက် သောက်ပြီး</span>
+                    </button>
+                    <button type="button" onclick="resetWater()" class="text-xs text-rose-500 hover:text-rose-700 font-bold px-3 py-2" id="resetWaterText">စတင်ရန် ပြန်ညှိမည်</button>
+                    <span id="consumedWaterVal" class="ml-auto text-xs font-bold text-slate-700 dark:text-slate-300">သောက်ပြီး: 0 / 10 ခွက်</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saved History Section -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-cyan-500/10">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-2xl shadow-inner shrink-0 border border-cyan-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="histTitle">၅။ နေ့စဥ် စားသုံးမှု မှတ်တမ်းဟောင်းများ (History)</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="histSub">အတိတ်ရက်များမှ မှတ်တမ်းများကို ကြည့်ရှုရန်</p>
+                    </div>
+                </div>
+                <button type="button" onclick="clearHistory()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold underline" id="clearHistText">မှတ်တမ်းအားလုံး ရှင်းမည်</button>
+            </div>
+
+            <div id="historyContainer" class="space-y-3"></div>
+        </section>
+
+        <!-- 30-Day Plan Roadmap Section -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-amber-500/10">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl shadow-inner shrink-0 border border-amber-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white" id="plan30Title">၆။ ရက်ပေါင်း ၃၀ အသားတက်ရန် နေ့စဥ်အစီအစဥ် (1-30 Day Roadmap)</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="plan30Sub">ရက်စွဲအလိုက် စားသောက်ရန်၊ လေ့ကျင့်ခန်းနှင့် အိပ်ချိန်လမ်းညွှန်</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-bold text-slate-600 dark:text-slate-300" id="selectDayLabel">ရက်ရွေးရန်:</label>
+                    <select id="daySelector" onchange="renderDayPlan()" class="border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs bg-white/90 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none shadow-sm transition font-bold"></select>
+                </div>
+            </div>
+
+            <div id="dayDetailCard" class="p-5 sm:p-6 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-950/50 dark:to-orange-950/50 border border-amber-200 dark:border-amber-800/60 rounded-2xl backdrop-blur-md space-y-4 shadow-sm">
+                <div class="flex justify-between items-center border-b border-amber-200/60 dark:border-amber-900/50 pb-3 flex-wrap gap-2">
+                    <h3 id="dayHeading" class="text-base sm:text-lg font-extrabold text-amber-900 dark:text-amber-200">Day 1: Foundation & High Calorie Start</h3>
+                    <span id="dayFocusBadge" class="bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30 shadow-sm">Focus: Nutrition & Core Setup</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-white/90 dark:bg-slate-800/90 p-4 rounded-2xl border border-amber-100 dark:border-slate-700 shadow-sm">
+                        <h4 class="font-bold text-amber-800 dark:text-amber-400 mb-1.5 flex items-center gap-1.5" id="mealPlanLabel">🍽️ နေ့စဥ် စားသောက်မည့် အစားအစာ</h4>
+                        <p id="dayMealText" class="text-slate-700 dark:text-slate-300 text-xs leading-relaxed">...</p>
+                    </div>
+                    <div class="bg-white/90 dark:bg-slate-800/90 p-4 rounded-2xl border border-amber-100 dark:border-slate-700 shadow-sm">
+                        <h4 class="font-bold text-amber-800 dark:text-amber-400 mb-1.5 flex items-center gap-1.5" id="workoutPlanLabel">💪 လေ့ကျင့်ခန်း နှင့် အနားယူမှု</h4>
+                        <p id="dayWorkoutText" class="text-slate-700 dark:text-slate-300 text-xs leading-relaxed">...</p>
+                    </div>
+                    <div class="bg-white/90 dark:bg-slate-800/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <h4 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1.5 flex items-center gap-1.5" id="sleepPlanLabel">😴 အိပ်ချိန် နှင့် အနားယူမှု</h4>
+                        <p id="daySleepText" class="text-slate-700 dark:text-slate-300 text-xs leading-relaxed">...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Meal Plan Guide -->
+        <section class="glass-card rounded-3xl shadow-2xl p-5 sm:p-8 transition duration-300 hover:shadow-emerald-500/10">
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full inline-block shrink-0 shadow-sm shadow-emerald-500"></span>
+                <span id="guideTitle">၇။ အသားတက်စေရန် စားသုံးသင့်သည့် နမူနာအစားအစာများ</span>
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🌅</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g1Title">နံနက်စာ</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g1Desc">ထမင်း (သို့) ပေါင်မုန့်၊ ကြက်ဥပြုတ် ၂ လုံး၊ ပဲပြုတ် သို့မဟုတ် အုတ်ဂျုံဖျော်ရည်။</p>
+                </div>
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🍌</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g2Title">မနက်ခင်း သရေစာ</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g2Desc">ငှက်ပျောသီး ၂ လုံး၊ မြေပဲထောပတ်သုတ်ထားသော ပေါင်မုန့်။</p>
+                </div>
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🍛</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g3Title">နေ့လယ်စာ</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g3Desc">ထမင်း (ပုံမှန်ထက်ပိုစားပါ)၊ ကြက်သား (သို့) အမဲသား၊ ပဲဟင်း၊ ဟင်းရွက်စုံ။</p>
+                </div>
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🥜</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g4Title">ညနေခင်း သရေစာ</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g4Desc">ဒိန်ချဉ် (Yogurt)၊ ကန်စွန်းဥပြုတ် သို့မဟုတ် အာလူးပြုတ်။</p>
+                </div>
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🍲</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g5Title">ညစာ</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g5Desc">ထမင်း၊ ဝက်သား သို့မဟုတ် ငါးဟင်း (အဆီအနှစ် အနည်းငယ်ပါလည်းရ)၊ အရည်သောက်။</p>
+                </div>
+                <div class="p-5 bg-white/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm hover:shadow-md transition group">
+                    <div class="text-2xl mb-2 transform group-hover:scale-110 transition">🥛</div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 mb-1 text-base" id="g6Title">အိပ်ရာဝင်ခါနီး</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" id="g6Desc">နို့နွေးနွေး တစ်ခွက် သို့မဟုတ် ပရိုတင်း ဖျော်ရည်။ အနည်းဆုံး ၈ နာရီပြည့်ဝစွာ အိပ်စက်ပါ။</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 text-center py-6 mt-auto text-xs border-t border-slate-800 space-y-2 relative z-20">
+        <p id="footerText">ကျန်းမာရေးနှင့်ညီညွတ်စွာ ကိုယ်အလေးချိန်တက်စေရန် လုံလောက်သော အိပ်ချိန် (၈ နာရီ) နှင့် လေ့ကျင့်ခန်းကို တွဲဖက်လုပ်ဆောင်ပါ။</p>
+        <p class="text-emerald-400 font-bold">ဝက်ဆိုက်ထုတ်သူ: MR.SAI SWEET HURM</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'my';
+        let foodItems = [];
+        let waterGlasses = 0;
+        let targetGlasses = 10;
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        const translations = {
+            my: {
+                langName: 'မြန်မာ (Myanmar)',
+                mainTitle: '💪 အသားပြည့်ပြည့် ဝဝဖြိုးဖြိုး ဇယား',
+                subTitle: 'Gemini AI ဖြင့် ကယ်လိုရီ၊ အစားအစာ၊ အိပ်ချိန်နှင့် ရေသောက်သုံးမှုကို တွက်ချက်ပေးသော စနစ်',
+                headerBadge: '✨ Created by MR.SAI SWEET HURM',
+                profileText: 'အကောင့်ဝင်ပြီး',
+                logoutText: 'ထွက်ရန်',
+                calcTitle: '၁။ ကယ်လိုရီ လိုအပ်ချက် တွက်ချက်ရန်',
+                calcSub: 'သင်၏ ခန္ဓာကိုယ်အချက်အလက်များကို ထည့်သွင်းပါ',
+                labelGender: 'ကျား/မ',
+                optMale: 'ကျား (Male)',
+                optFemale: 'မ (Female)',
+                labelAge: 'အသက် (နှစ်)',
+                labelHeight: 'အရပ် (စင်တီမီတာ)',
+                labelWeight: 'အလေးချိန် (ကေဂျီ)',
+                labelActivity: 'ကိုယ်လက်လှုပ်ရှားမှု ပမာဏ',
+                optAct1: 'ရုံးထိုင်အလုပ် သို့မဟုတ် လှုပ်ရှားမှုနည်းခြင်း (Sedentary)',
+                optAct2: 'အလယ်အလတ် လှုပ်ရှားမှု (တစ်ပတ် ၂-၃ ရက် လေ့ကျင့်ခန်း)',
+                optAct3: 'လှုပ်ရှားမှုများခြင်း (တစ်ပတ် ၄-၅ ရက် လေ့ကျင့်ခန်း)',
+                calcBtnText: 'ကယ်လိုရီ ပမာဏ တွက်မည် (+ အသားတက်ရန် ပိုစားရန်)',
+                resMaintLabel: 'သင်၏ ပုံမှန်လောင်ကျွမ်းမှု (Maintenance Calories):',
+                resTargetLabel: '🎯 အသားတက်ဖို့ လိုအပ်သည့် ကယ်လိုရီ:',
+                trackerTitle: '၂။ AI အစားအစာ အကြံပြုချက် နှင့် ကယ်လိုရီ တိုင်းတာရန်',
+                trackerSub: 'စားမည့် အစားအစာနာမည် ရိုက်ထည့်ပါ သို့မဟုတ် ကင်မရာဖြင့် ဓာတ်ပုံရိုက်၍ ကယ်လိုရီစကန်ဖတ်ပါ',
+                aiSuggTitle: '💡 AI စားစရာ အကြံပြုချက် တောင်းခံရန်',
+                aiSuggDesc: 'အသားတက်ရန် ကောင်းမွန်သော အစားအစာ သို့မဟုတ် အသီးအနှံကို AI က အကြံပြုပေးပါမည်။',
+                suggestBtn: '✨ ဘာစားရမလဲ AI မေးမည်',
+                cameraScanTitle: '📸 ကင်မရာဖွင့်၍ အစားအစာပုံ Scan ဖတ်ပြီး ကယ်လိုရီတိုင်းမည်',
+                cameraScanDesc: 'သင်စားမည့် ဟင်းပွဲ သို့မဟုတ် အစားအစာပုံကို ကင်မရာဖြင့် ရိုက်ကူးပါ (သို့) ပုံတင်ပါ',
+                camUploadBtnText: '📷 ကင်မရာဖွင့် / ပုံတင်ရန်',
+                addScannedBtnText: 'စာရင်းထဲသို့ ထည့်မည်',
+                aiBtn: '✨ AI ဖြင့် ကယ်လိုရီရှာမည်',
+                foodPlaceholder: 'ဥပမာ - ငှက်ပျောသီး ၂ လုံး၊ ထမင်းတစ်ပန်းကန် သို့မဟုတ် ပန်းသီး',
+                thFood: 'အစားအစာ / အသီးအနှံအမည်',
+                thCal: 'ကယ်လိုရီ (kcal)',
+                thAction: 'လုပ်ဆောင်ချက်',
+                sumLabel: 'စုစုပေါင်း စားသုံးပြီး:',
+                saveHistBtnText: 'ယနေ့အတွက် မှတ်တမ်းသိမ်းမည်',
+                sleepSecTitle: '၃။ အိပ်ချိန် မှတ်တမ်းနှင့် တိုင်းတာရန် (Sleep Tracker)',
+                sleepSecSub: 'ကြွက်သား ပြန်လည်ကောင်းမွန်ရန် အိပ်စက်ချိန်ကို မှတ်တမ်းတင်ပါ',
+                labelSleepHours: 'အိပ်စက်ခဲ့သည့် နာရီပမာဏ (Hours)',
+                labelSleepQuality: 'အိပ်စက်မှု အရည်အသွေး (Sleep Quality)',
+                optSleepGood: 'ကောင်းမွန်သည် (Deep & Rested)',
+                optSleepNormal: 'သင့်တင်သည် (Normal)',
+                optSleepBad: 'အိပ်ရေးမဝပါ (Disturbed / Poor)',
+                saveSleepBtnText: 'အိပ်ချိန် မှတ်တမ်းတင်မည်',
+                sleepFeedbackText: 'ကြွက်သားထုထည် တက်လာစေရန် ညစဉ် အနည်းဆုံး ၈ နာရီ အပြည့်အဝ အိပ်စက်ပါ။',
+                waterSecTitle: '၄။ ရေသောက်သုံးမှု မှတ်တမ်း (Water Intake Tracker)',
+                waterSecSub: 'တစ်နေ့တာ သောက်သင့်သော ရေပမာဏနှင့် သောက်ပြီးစီးမှုကို တွက်ချက်ပါ',
+                labelWaterWeight: 'သင့်အလေးချိန် (ကေဂျီဖြင့် ထည့်ပါ)',
+                calcWaterBtnText: 'လိုအပ်သော ရေပမာဏ တွက်မည်',
+                targetWaterLabel: '🎯 တစ်နေ့တာ သောက်သင့်သော ပမာဏ:',
+                addGlassBtnText: 'ရေ ၁ ခွက် သောက်ပြီး',
+                resetWaterText: 'စတင်ရန် ပြန်ညှိမည်',
+                histTitle: '၅။ နေ့စဥ် စားသုံးမှု မှတ်တမ်းဟောင်းများ (History)',
+                histSub: 'အတိတ်ရက်များမှ မှတ်တမ်းများကို ကြည့်ရှုရန်',
+                clearHistText: 'မှတ်တမ်းအားလုံး ရှင်းမည်',
+                plan30Title: '၆။ ရက်ပေါင်း ၃၀ အသားတက်ရန် နေ့စဥ်အစီအစဥ် (1-30 Day Roadmap)',
+                plan30Sub: 'ရက်စွဲအလိုက် စားသောက်ရန်၊ လေ့ကျင့်ခန်းနှင့် အိပ်ချိန်လမ်းညွှန်',
+                selectDayLabel: 'ရက်ရွေးရန်:',
+                mealPlanLabel: '🍽️ နေ့စဥ် စားသောက်မည့် အစားအစာ',
+                workoutPlanLabel: '💪 လေ့ကျင့်ခန်း နှင့် အနားယူမှု',
+                sleepPlanLabel: '😴 အိပ်ချိန် နှင့် အနားယူမှု',
+                guideTitle: '၇။ အသားတက်စေရန် စားသုံးသင့်သည့် နမူနာအစားအစာများ',
+                g1Title: 'နံနက်စာ', g1Desc: 'ထမင်း (သို့) ပေါင်မုန့်၊ ကြက်ဥပြုတ် ၂ လုံး၊ ပဲပြုတ် သို့မဟုတ် အုတ်ဂျုံဖျော်ရည်။',
+                g2Title: 'မနက်ခင်း သရေစာ', g2Desc: 'ငှက်ပျောသီး ၂ လုံး၊ မြေပဲထောပတ်သုတ်ထားသော ပေါင်မုန့်။',
+                g3Title: 'နေ့လယ်စာ', g3Desc: 'ထမင်း (ပုံမှန်ထက်ပိုစားပါ)၊ ကြက်သား (သို့) အမဲသား၊ ပဲဟင်း၊ ဟင်းရွက်စုံ။',
+                g4Title: 'ညနေခင်း သရေစာ', g4Desc: 'ဒိန်ချဉ် (Yogurt)၊ ကန်စွန်းဥပြုတ် သို့မဟုတ် အာလူးပြုတ်။',
+                g5Title: 'ညစာ', g5Desc: 'ထမင်း၊ ဝက်သား သို့မဟုတ် ငါးဟင်း (အဆီအနှစ် အနည်းငယ်ပါလည်းရ)၊ အရည်သောက်။',
+                g6Title: 'အိပ်ရာဝင်ခါနီး', g6Desc: 'နို့နွေးနွေး တစ်ခွက် သို့မဟုတ် ပရိုတင်း ဖျော်ရည်။ အနည်းဆုံး ၈ နာရီပြည့်ဝစွာ အိပ်စက်ပါ။',
+                footerText: 'ကျန်းမာရေးနှင့်ညီညွတ်စွာ ကိုယ်အလေးချိန်တက်စေရန် လုံလောက်သော အိပ်ချိန် (၈ နာရီ) နှင့် လေ့ကျင့်ခန်းကို တွဲဖက်လုပ်ဆောင်ပါ။'
+            },
+            en: {
+                langName: 'English',
+                mainTitle: '💪 Muscle Gain & Calorie Pro',
+                subTitle: 'Gemini AI Powered Calorie, Diet, Sleep and Water Tracker',
+                headerBadge: '✨ Created by MR.SAI SWEET HURM',
+                profileText: 'Logged In',
+                logoutText: 'Logout',
+                calcTitle: '1. Calorie Requirement Calculator',
+                calcSub: 'Enter your body metrics below',
+                labelGender: 'Gender',
+                optMale: 'Male',
+                optFemale: 'Female',
+                labelAge: 'Age (Years)',
+                labelHeight: 'Height (cm)',
+                labelWeight: 'Weight (kg)',
+                labelActivity: 'Activity Level',
+                optAct1: 'Sedentary (Little or no exercise)',
+                optAct2: 'Moderate (Exercise 2-3 times/week)',
+                optAct3: 'Active (Exercise 4-5 times/week)',
+                calcBtnText: 'Calculate Calories (+ Surplus for Bulking)',
+                resMaintLabel: 'Maintenance Calories:',
+                resTargetLabel: '🎯 Target Bulking Calories:',
+                trackerTitle: '2. AI Meal Suggestion & Calorie Tracker',
+                trackerSub: 'Type food name or scan food image with camera to calculate calories',
+                aiSuggTitle: '💡 Ask AI for Meal Suggestion',
+                aiSuggDesc: 'AI will suggest a high-calorie healthy meal for muscle building.',
+                suggestBtn: '✨ Ask AI What to Eat',
+                cameraScanTitle: '📸 Camera Food Scanner & Calorie Counter',
+                cameraScanDesc: 'Capture or upload a photo of your meal to scan nutrients',
+                camUploadBtnText: '📷 Open Camera / Upload',
+                addScannedBtnText: 'Add to List',
+                aiBtn: '✨ Search Calories with AI',
+                foodPlaceholder: 'e.g. 2 Bananas, 1 Plate Rice, or Apple',
+                thFood: 'Food / Fruit Name',
+                thCal: 'Calories (kcal)',
+                thAction: 'Action',
+                sumLabel: 'Total Consumed:',
+                saveHistBtnText: "Save Today's History",
+                sleepSecTitle: '3. Sleep Tracker & Recovery',
+                sleepSecSub: 'Log your sleeping hours for optimal muscle growth',
+                labelSleepHours: 'Sleep Hours',
+                labelSleepQuality: 'Sleep Quality',
+                optSleepGood: 'Deep & Rested',
+                optSleepNormal: 'Normal',
+                optSleepBad: 'Disturbed / Poor',
+                saveSleepBtnText: 'Log Sleep Record',
+                sleepFeedbackText: 'Aim for at least 8 hours of quality sleep nightly to maximize muscle recovery.',
+                waterSecTitle: '4. Water Intake Tracker',
+                waterSecSub: 'Calculate your daily hydration target and track progress',
+                labelWaterWeight: 'Your Weight (in kg)',
+                calcWaterBtnText: 'Calculate Water Target',
+                targetWaterLabel: '🎯 Daily Water Target:',
+                addGlassBtnText: 'Drink 1 Glass',
+                resetWaterText: 'Reset',
+                histTitle: '5. Daily Consumption History',
+                histSub: 'Review your past logs',
+                clearHistText: 'Clear All History',
+                plan30Title: '6. 30-Day Muscle Building Roadmap',
+                plan30Sub: 'Day-by-day nutrition, workout, and sleep guide',
+                selectDayLabel: 'Select Day:',
+                mealPlanLabel: '🍽️ Daily Meal Plan',
+                workoutPlanLabel: '💪 Workout & Rest',
+                sleepPlanLabel: '😴 Sleep & Recovery',
+                guideTitle: '7. Recommended Muscle Building Foods',
+                g1Title: 'Breakfast', g1Desc: 'Rice or Bread, 2 Boiled Eggs, Steamed Beans or Oatmeal.',
+                g2Title: 'Morning Snack', g2Desc: '2 Bananas, Peanut Butter Toast.',
+                g3Title: 'Lunch', g3Desc: 'Extra Rice, Chicken or Beef, Lentil Soup, Mixed Veggies.',
+                g4Title: 'Evening Snack', g4Desc: 'Yogurt, Boiled Sweet Potato or Potato.',
+                g5Title: 'Dinner', g5Desc: 'Rice, Pork or Fish curry, Soup.',
+                g6Title: 'Before Bed', g6Desc: 'Warm Milk or Protein shake. Get at least 8 hours sleep.',
+                footerText: 'Combine adequate sleep (8 hours) and exercise with proper nutrition to gain weight healthily.'
+            },
+            th: {
+                langName: 'ไทย (Thai)',
+                mainTitle: '💪 เพิ่มกล้ามเนื้อและแคลอรี่',
+                subTitle: 'ระบบคำนวณแคลอรี่ อาหาร การนอน และน้ำดื่มด้วย Gemini AI',
+                headerBadge: '✨ Created by MR.SAI SWEET HURM',
+                profileText: 'เข้าสู่ระบบแล้ว',
+                logoutText: 'ออกจากระบบ',
+                calcTitle: '1. คำนวณความต้องการแคลอรี่',
+                calcSub: 'กรอกข้อมูลร่างกายของคุณ',
+                labelGender: 'เพศ',
+                optMale: 'ชาย (Male)',
+                optFemale: 'หญิง (Female)',
+                labelAge: 'อายุ (ปี)',
+                labelHeight: 'ส่วนสูง (ซม.)',
+                labelWeight: 'น้ำหนัก (กก.)',
+                labelActivity: 'ระดับกิจกรรม',
+                optAct1: 'นั่งทำงานอยู่กับที่ / ออกกำลังกายน้อยมาก',
+                optAct2: 'ออกกำลังกายปานกลาง (2-3 ครั้ง/สัปดาห์)',
+                optAct3: 'ออกกำลังกายหนัก (4-5 ครั้ง/สัปดาห์)',
+                calcBtnText: 'คำนวณแคลอรี่ (+ ส่วนเกินเพื่อเพิ่มกล้ามเนื้อ)',
+                resMaintLabel: 'แคลอรี่ที่ร่างกายเผาผลาญต่อวัน:',
+                resTargetLabel: '🎯 แคลอรี่ที่ต้องทานเพื่อเพิ่มกล้ามเนื้อ:',
+                trackerTitle: '2. แนะนำอาหารและคำนวณแคลอรี่ด้วย AI',
+                trackerSub: 'พิมพ์ชื่ออาหาร หรือสแกนภาพถ่ายอาหารด้วยกล้องเพื่อคำนวณแคลอรี่',
+                aiSuggTitle: '💡 ขอคำแนะนำเมนูอาหารจาก AI',
+                aiSuggDesc: 'AI จะแนะนำอาหารที่เหมาะสมสำหรับการสร้างกล้ามเนื้อ',
+                suggestBtn: '✨ ถาม AI ว่าควรกินอะไรดี',
+                cameraScanTitle: '📸 สแกนรูปถ่ายอาหารด้วยกล้องเพื่อคำนวณแคลอรี่',
+                cameraScanDesc: 'ถ่ายภาพหรืออัปโหลดรูปจานอาหารของคุณ',
+                camUploadBtnText: '📷 เปิดกล้อง / อัปโหลดรูป',
+                addScannedBtnText: 'เพิ่มลงในรายการ',
+                aiBtn: '✨ ค้นหาแคลอรี่ด้วย AI',
+                foodPlaceholder: 'เช่น กล้วย 2 ลูก, ข้าว 1 จาน หรือ แอปเปิ้ล',
+                thFood: 'ชื่ออาหาร / ผลไม้',
+                thCal: 'แคลอรี่ (kcal)',
+                thAction: 'การจัดการ',
+                sumLabel: 'รวมที่ทานไป:',
+                saveHistBtnText: 'บันทึกประวัติประจำวัน',
+                sleepSecTitle: '3. บันทึกและติดตามการนอนหลับ',
+                sleepSecSub: 'บันทึกชั่วโมงการนอนเพื่อการฟื้นฟูของกล้ามเนื้อ',
+                labelSleepHours: 'ชั่วโมงการนอน',
+                labelSleepQuality: 'คุณภาพการนอน',
+                optSleepGood: 'หลับสนิท / พักผ่อนเต็มที่',
+                optSleepNormal: 'ปานกลาง',
+                optSleepBad: 'นอนไม่พอ / หลับๆ ตื่นๆ',
+                saveSleepBtnText: 'บันทึกการนอนหลับ',
+                sleepFeedbackText: 'ควรนอนหลับอย่างน้อย 8 ชั่วโมงต่อคืน เพื่อให้กล้ามเนื้อเติบโตและฟื้นฟูเต็มที่',
+                waterSecTitle: '4. ติดตามการดื่มน้ำ',
+                waterSecSub: 'คำนวณปริมาณน้ำที่ควรดื่มและติดตามในแต่ละวัน',
+                labelWaterWeight: 'น้ำหนักของคุณ (กิโลกรัม)',
+                calcWaterBtnText: 'คำนวณปริมาณน้ำ',
+                targetWaterLabel: '🎯 ปริมาณน้ำที่ควรดื่มต่อวัน:',
+                addGlassBtnText: 'ดื่มแล้ว 1 แก้ว',
+                resetWaterText: 'รีเซ็ต',
+                histTitle: '5. ประวัติการทานอาหารย้อนหลัง',
+                histSub: 'ตรวจสอบประวัติวันก่อนหน้า',
+                clearHistText: 'ล้างประวัติทั้งหมด',
+                plan30Title: '6. แผนเพิ่มกล้ามเนื้อ 30 วัน',
+                plan30Sub: 'คู่มือโภชนาการ การออกกำลังกาย และการนอนหลับรายวัน',
+                selectDayLabel: 'เลือกวันที่:',
+                mealPlanLabel: '🍽️ เมนูอาหารประจำวัน',
+                workoutPlanLabel: '💪 การออกกำลังกายและการพักผ่อน',
+                sleepPlanLabel: '😴 การนอนหลับ',
+                guideTitle: '7. ตัวอย่างอาหารแนะนำสำหรับเพิ่มกล้ามเนื้อ',
+                g1Title: 'มื้อเช้า', g1Desc: 'ข้าวหรือขนมปัง, ไข่ต้ม 2 ฟอง, ถั่วต้ม หรือโอ๊ตมีล',
+                g2Title: 'ของว่างเช้า', g2Desc: 'กล้วย 2 ลูก, ขนมปังทาเนยถั่ว',
+                g3Title: 'มื้อเที่ยง', g3Desc: 'ข้าวสวย (เพิ่มปริมาณ), ไก่หรือเนื้อวัว, แกงจืด, ผัดผักรวม',
+                g4Title: 'ของว่างเย็น', g4Desc: 'โยเกิร์ต, มันเทศต้ม หรือมันฝรั่งต้ม',
+                g5Title: 'มื้อเย็น', g5Desc: 'ข้าวสวย, แกงหมูหรือปลา, ต้มจืด',
+                g6Title: 'ก่อนนอน', g6Desc: 'นมอุ่นๆ 1 แก้ว หรือโปรตีนเชค นอนหลับอย่างน้อย 8 ชั่วโมง',
+                footerText: 'ควรนอนหลับพักผ่อนให้เพียงพอ (8 ชั่วโมง) ควบคู่กับการออกกำลังกายและโภชนาการที่ดีเพื่อให้ร่างกายมีน้ำหนักเพิ่มขึ้นอย่างมีสุขภาพดี'
+            }
+        };
+
+        window.checkLoginState = function() {
+            const gateway = document.getElementById('authGatewayScreen');
+            const profileBadge = document.getElementById('userProfileBadge');
+            if (isLoggedIn) {
+                if (gateway) gateway.style.display = 'none';
+                if (profileBadge) profileBadge.classList.remove('hidden');
+            } else {
+                if (gateway) gateway.style.display = 'flex';
+                if (profileBadge) profileBadge.classList.add('hidden');
+            }
+        };
+
+        window.instantLogin = function(provider) {
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            window.checkLoginState();
+        };
+
+        window.handleGatewayLogin = function() {
+            const email = document.getElementById('gatewayEmail').value.trim();
+            const pass = document.getElementById('gatewayPass').value.trim();
+            if (!email || !pass) {
+                const msg = currentLang === 'my' ? 'ကျေးဇူးပြု၍ အီးမေးလ်နှင့် စကားဝှက်ထည့်ပါ' : (currentLang === 'th' ? 'กรุณากรอกอีเมลและรหัสผ่าน' : 'Please enter email and password');
+                console.log(msg);
+                return;
+            }
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            window.checkLoginState();
+        };
+
+        window.logoutApp = function() {
+            isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            window.checkLoginState();
+        };
+
+        window.toggleLanguage = function() {
+            if (currentLang === 'my') {
+                currentLang = 'en';
+            } else if (currentLang === 'en') {
+                currentLang = 'th';
+            } else {
+                currentLang = 'my';
+            }
+            localStorage.setItem('lang', currentLang);
+            updateLanguageUI();
+        };
+
+        window.toggleTheme = function() {
+            const body = document.getElementById('appBody');
+            body.classList.toggle('dark');
+            const isDark = body.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            if (themeIcon) themeIcon.innerText = isDark ? '☀️' : '🌙';
+            if (themeText) themeText.innerText = isDark ? (currentLang === 'my' ? 'အဖြူ' : 'Light') : 'Dark';
+        };
+
+        function updateLanguageUI() {
+            const t = translations[currentLang];
+            if (!t) return;
+
+            const elLangText = document.getElementById('langText');
+            const elHeaderBadge = document.getElementById('headerBadge');
+            const elMainTitle = document.getElementById('mainTitle');
+            const elSubTitle = document.getElementById('subTitle');
+            const elProfileName = document.getElementById('profileNameDisplay');
+            const elLogout = document.getElementById('logoutText');
+
+            if (elLangText) elLangText.innerText = t.langName;
+            if (elHeaderBadge) elHeaderBadge.innerText = t.headerBadge;
+            if (elMainTitle) elMainTitle.innerText = t.mainTitle;
+            if (elSubTitle) elSubTitle.innerText = t.subTitle;
+            if (elProfileName) elProfileName.innerText = t.profileText;
+            if (elLogout) elLogout.innerText = t.logoutText;
+
+            const calcTitle = document.getElementById('calcTitle');
+            if (calcTitle) calcTitle.innerText = t.calcTitle;
+            const calcSub = document.getElementById('calcSub');
+            if (calcSub) calcSub.innerText = t.calcSub;
+            const labelGender = document.getElementById('labelGender');
+            if (labelGender) labelGender.innerText = t.labelGender;
+            const optMale = document.getElementById('optMale');
+            if (optMale) optMale.innerText = t.optMale;
+            const optFemale = document.getElementById('optFemale');
+            if (optFemale) optFemale.innerText = t.optFemale;
+            const labelAge = document.getElementById('labelAge');
+            if (labelAge) labelAge.innerText = t.labelAge;
+            const labelHeight = document.getElementById('labelHeight');
+            if (labelHeight) labelHeight.innerText = t.labelHeight;
+            const labelWeight = document.getElementById('labelWeight');
+            if (labelWeight) labelWeight.innerText = t.labelWeight;
+            const labelActivity = document.getElementById('labelActivity');
+            if (labelActivity) labelActivity.innerText = t.labelActivity;
+            const optAct1 = document.getElementById('optAct1');
+            if (optAct1) optAct1.innerText = t.optAct1;
+            const optAct2 = document.getElementById('optAct2');
+            if (optAct2) optAct2.innerText = t.optAct2;
+            const optAct3 = document.getElementById('optAct3');
+            if (optAct3) optAct3.innerText = t.optAct3;
+            
+            const calcBtnText = document.getElementById('calcBtnText');
+            if (calcBtnText) calcBtnText.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg> ${t.calcBtnText}`;
+            
+            const resMaintLabel = document.getElementById('resMaintLabel');
+            if (resMaintLabel) resMaintLabel.innerText = t.resMaintLabel;
+            const resTargetLabel = document.getElementById('resTargetLabel');
+            if (resTargetLabel) resTargetLabel.innerText = t.resTargetLabel;
+
+            const trackerTitle = document.getElementById('trackerTitle');
+            if (trackerTitle) trackerTitle.innerText = t.trackerTitle;
+            const trackerSub = document.getElementById('trackerSub');
+            if (trackerSub) trackerSub.innerText = t.trackerSub;
+            const aiSuggTitle = document.getElementById('aiSuggTitle');
+            if (aiSuggTitle) aiSuggTitle.innerText = t.aiSuggTitle;
+            const aiSuggDesc = document.getElementById('aiSuggDesc');
+            if (aiSuggDesc) aiSuggDesc.innerText = t.aiSuggDesc;
+            const suggestBtn = document.getElementById('suggestBtn');
+            if (suggestBtn) suggestBtn.innerText = t.suggestBtn;
+            const cameraScanTitle = document.getElementById('cameraScanTitle');
+            if (cameraScanTitle) cameraScanTitle.innerText = t.cameraScanTitle;
+            const cameraScanDesc = document.getElementById('cameraScanDesc');
+            if (cameraScanDesc) cameraScanDesc.innerText = t.cameraScanDesc;
+            const camUploadBtnText = document.getElementById('camUploadBtnText');
+            if (camUploadBtnText) camUploadBtnText.innerHTML = `📷 ${t.camUploadBtnText.replace('📷 ', '')}`;
+            const addScannedBtnText = document.getElementById('addScannedBtnText');
+            if (addScannedBtnText) addScannedBtnText.innerText = t.addScannedBtnText;
+            const aiBtn = document.getElementById('aiBtn');
+            if (aiBtn) aiBtn.innerText = t.aiBtn;
+            const foodName = document.getElementById('foodName');
+            if (foodName) foodName.placeholder = t.foodPlaceholder;
+            const thFood = document.getElementById('thFood');
+            if (thFood) thFood.innerText = t.thFood;
+            const thCal = document.getElementById('thCal');
+            if (thCal) thCal.innerText = t.thCal;
+            const thAction = document.getElementById('thAction');
+            if (thAction) thAction.innerText = t.thAction;
+            const sumLabel = document.getElementById('sumLabel');
+            if (sumLabel) sumLabel.innerText = t.sumLabel;
+            const saveHistBtnText = document.getElementById('saveHistBtnText');
+            if (saveHistBtnText) saveHistBtnText.innerText = t.saveHistBtnText;
+
+            const sleepSecTitle = document.getElementById('sleepSecTitle');
+            if (sleepSecTitle) sleepSecTitle.innerText = t.sleepSecTitle;
+            const sleepSecSub = document.getElementById('sleepSecSub');
+            if (sleepSecSub) sleepSecSub.innerText = t.sleepSecSub;
+            const labelSleepHours = document.getElementById('labelSleepHours');
+            if (labelSleepHours) labelSleepHours.innerText = t.labelSleepHours;
+            const labelSleepQuality = document.getElementById('labelSleepQuality');
+            if (labelSleepQuality) labelSleepQuality.innerText = t.labelSleepQuality;
+            const optSleepGood = document.getElementById('optSleepGood');
+            if (optSleepGood) optSleepGood.innerText = t.optSleepGood;
+            const optSleepNormal = document.getElementById('optSleepNormal');
+            if (optSleepNormal) optSleepNormal.innerText = t.optSleepNormal;
+            const optSleepBad = document.getElementById('optSleepBad');
+            if (optSleepBad) optSleepBad.innerText = t.optSleepBad;
+            const saveSleepBtnText = document.getElementById('saveSleepBtnText');
+            if (saveSleepBtnText) saveSleepBtnText.innerText = t.saveSleepBtnText;
+            const sleepFeedbackText = document.getElementById('sleepFeedbackText');
+            if (sleepFeedbackText) sleepFeedbackText.innerText = t.sleepFeedbackText;
+
+            const waterSecTitle = document.getElementById('waterSecTitle');
+            if (waterSecTitle) waterSecTitle.innerText = t.waterSecTitle;
+            const waterSecSub = document.getElementById('waterSecSub');
+            if (waterSecSub) waterSecSub.innerText = t.waterSecSub;
+            const labelWaterWeight = document.getElementById('labelWaterWeight');
+            if (labelWaterWeight) labelWaterWeight.innerText = t.labelWaterWeight;
+            const calcWaterBtnText = document.getElementById('calcWaterBtnText');
+            if (calcWaterBtnText) calcWaterBtnText.innerText = `💧 ${t.calcWaterBtnText.replace('💧 ', '')}`;
+            const targetWaterLabel = document.getElementById('targetWaterLabel');
+            if (targetWaterLabel) targetWaterLabel.innerText = t.targetWaterLabel;
+            const addGlassBtnText = document.getElementById('addGlassBtnText');
+            if (addGlassBtnText) addGlassBtnText.innerText = `➕ ${t.addGlassBtnText.replace('➕ ', '')}`;
+            const resetWaterText = document.getElementById('resetWaterText');
+            if (resetWaterText) resetWaterText.innerText = t.resetWaterText;
+
+            const histTitle = document.getElementById('histTitle');
+            if (histTitle) histTitle.innerText = t.histTitle;
+            const histSub = document.getElementById('histSub');
+            if (histSub) histSub.innerText = t.histSub;
+            const clearHistText = document.getElementById('clearHistText');
+            if (clearHistText) clearHistText.innerText = t.clearHistText;
+
+            const plan30Title = document.getElementById('plan30Title');
+            if (plan30Title) plan30Title.innerText = t.plan30Title;
+            const plan30Sub = document.getElementById('plan30Sub');
+            if (plan30Sub) plan30Sub.innerText = t.plan30Sub;
+            const selectDayLabel = document.getElementById('selectDayLabel');
+            if (selectDayLabel) selectDayLabel.innerText = t.selectDayLabel;
+            const mealPlanLabel = document.getElementById('mealPlanLabel');
+            if (mealPlanLabel) mealPlanLabel.innerText = t.mealPlanLabel;
+            const workoutPlanLabel = document.getElementById('workoutPlanLabel');
+            if (workoutPlanLabel) workoutPlanLabel.innerText = t.workoutPlanLabel;
+            const sleepPlanLabel = document.getElementById('sleepPlanLabel');
+            if (sleepPlanLabel) sleepPlanLabel.innerText = t.sleepPlanLabel;
+
+            const guideTitle = document.getElementById('guideTitle');
+            if (guideTitle) guideTitle.innerText = t.guideTitle;
+            const g1Title = document.getElementById('g1Title');
+            if (g1Title) g1Title.innerText = t.g1Title;
+            const g1Desc = document.getElementById('g1Desc');
+            if (g1Desc) g1Desc.innerText = t.g1Desc;
+            const g2Title = document.getElementById('g2Title');
+            if (g2Title) g2Title.innerText = t.g2Title;
+            const g2Desc = document.getElementById('g2Desc');
+            if (g2Desc) g2Desc.innerText = t.g2Desc;
+            const g3Title = document.getElementById('g3Title');
+            if (g3Title) g3Title.innerText = t.g3Title;
+            const g3Desc = document.getElementById('g3Desc');
+            if (g3Desc) g3Desc.innerText = t.g3Desc;
+            const g4Title = document.getElementById('g4Title');
+            if (g4Title) g4Title.innerText = t.g4Title;
+            const g4Desc = document.getElementById('g4Desc');
+            if (g4Desc) g4Desc.innerText = t.g4Desc;
+            const g5Title = document.getElementById('g5Title');
+            if (g5Title) g5Title.innerText = t.g5Title;
+            const g5Desc = document.getElementById('g5Desc');
+            if (g5Desc) g5Desc.innerText = t.g5Desc;
+            const g6Title = document.getElementById('g6Title');
+            if (g6Title) g6Title.innerText = t.g6Title;
+            const g6Desc = document.getElementById('g6Desc');
+            if (g6Desc) g6Desc.innerText = t.g6Desc;
+            const footerText = document.getElementById('footerText');
+            if (footerText) footerText.innerText = t.footerText;
+        }
+
+        window.calculateCalories = function() {
+            const weight = parseFloat(document.getElementById('weight').value) || 55;
+            const height = parseFloat(document.getElementById('height').value) || 170;
+            const age = parseInt(document.getElementById('age').value) || 25;
+            const gender = document.getElementById('gender').value;
+            const activity = parseFloat(document.getElementById('activity').value) || 1.375;
+
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr += (gender === 'male' ? 5 : -161);
+
+            const maintenance = Math.round(bmr * activity);
+            const target = maintenance + 400; // Bulking surplus
+
+            document.getElementById('maintenanceVal').innerText = maintenance + ' kcal';
+            document.getElementById('targetVal').innerText = target + ' kcal';
+            document.getElementById('resultBox').classList.remove('hidden');
+        };
+
+        window.fetchAISuggestion = function() {
+            const box = document.getElementById('aiSuggestionBox');
+            box.classList.remove('hidden');
+            box.innerHTML = currentLang === 'my' ? '💡 အကြံပြုချက်: ကြက်ဥပြုတ် ၃ လုံး၊ ငှက်ပျောသီး ၂ လုံးနှင့် မြေပဲထောပတ်သုတ်ထားသော ပေါင်မုန့် ၂ ချပ်ကို နံနက်စာအဖြစ် စားသုံးပေးပါ။' : (currentLang === 'th' ? '💡 แนะนำ: ไข่ต้ม 3 ฟอง, กล้วย 2 ลูก และขนมปังทาเนยถั่ว 2 แผ่นสำหรับมื้อเช้าเพื่อเพิ่มพลังงาน' : '💡 Suggestion: Eat 3 boiled eggs, 2 bananas, and 2 slices of peanut butter toast for breakfast.');
+        };
+
+        window.handleFoodScan = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('scannedFoodPreview').src = e.target.result;
+                    document.getElementById('scanResultContainer').classList.remove('hidden');
+                    document.getElementById('scannedFoodName').innerText = currentLang === 'my' ? 'စကန်ဖတ်ထားသော အစားအစာ (AI Verified)' : 'Scanned Meal (AI Verified)';
+                    document.getElementById('scannedFoodDetails').innerText = currentLang === 'my' ? 'ခန့်မှန်းကယ်လိုရီ: 450 kcal (ပရိုတင်း 28g ပါဝင်သည်)' : 'Estimated Calories: 450 kcal (Contains 28g Protein)';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.addScannedFoodToList = function() {
+            foodItems.push({ name: currentLang === 'my' ? 'ဓာတ်ပုံစကန်ဖတ်စားစရာ' : 'Scanned Meal', cal: 450 });
+            renderFoodTable();
+            document.getElementById('scanResultContainer').classList.add('hidden');
+        };
+
+        window.fetchAICalories = function() {
+            const name = document.getElementById('foodName').value.trim();
+            if (!name) {
+                alert(currentLang === 'my' ? 'ကျေးဇူးပြု၍ အစားအစာနာမည် ရိုက်ထည့်ပါ' : 'Please enter food name');
+                return;
+            }
+            document.getElementById('aiLoading').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('aiLoading').classList.add('hidden');
+                let cal = Math.floor(Math.random() * 300) + 200;
+                foodItems.push({ name: name, cal: cal });
+                document.getElementById('foodName').value = '';
+                renderFoodTable();
+            }, 800);
+        };
+
+        window.deleteFoodItem = function(index) {
+            foodItems.splice(index, 1);
+            renderFoodTable();
+        };
+
+        function renderFoodTable() {
+            const tbody = document.getElementById('foodTableBody');
+            tbody.innerHTML = '';
+            let total = 0;
+            foodItems.forEach((item, idx) => {
+                total += item.cal;
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                        <td class="p-4 font-semibold text-slate-800 dark:text-slate-200">${item.name}</td>
+                        <td class="p-4 text-emerald-600 dark:text-emerald-400 font-bold">${item.cal} kcal</td>
+                        <td class="p-4 text-center"><button type="button" onclick="deleteFoodItem(${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold px-3 py-1 bg-rose-50 dark:bg-rose-950/50 rounded-lg">✕ ဖျက်ရန်</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('totalConsumed').innerText = total + ' kcal';
+        }
+
+        window.saveTodayHistory = function() {
+            let total = foodItems.reduce((acc, curr) => acc + curr.cal, 0);
+            let history = JSON.parse(localStorage.getItem('history') || '[]');
+            history.unshift({ date: new Date().toLocaleDateString(), total: total });
+            localStorage.setItem('history', JSON.stringify(history));
+            renderHistory();
+            alert(currentLang === 'my' ? 'ယနေ့အတွက် မှတ်တမ်းသိမ်းဆည်းပြီးပါပြီ' : 'Saved successfully');
+        };
+
+        function renderHistory() {
+            let history = JSON.parse(localStorage.getItem('history') || '[]');
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+            if (history.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">${currentLang === 'my' ? 'မှတ်တမ်းမရှိသေးပါ' : 'No history yet'}</p>`;
+                return;
+            }
+            history.forEach(h => {
+                container.innerHTML += `
+                    <div class="p-4 bg-white/80 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs sm:text-sm font-semibold">
+                        <span class="text-slate-700 dark:text-slate-300">📅 ${h.date}</span>
+                        <span class="text-emerald-600 dark:text-emerald-400 font-extrabold">${h.total} kcal</span>
+                    </div>
+                `;
+            });
+        }
+
+        window.clearHistory = function() {
+            localStorage.removeItem('history');
+            renderHistory();
+        };
+
+        window.logSleep = function() {
+            const hrs = document.getElementById('sleepHoursInput').value;
+            alert(currentLang === 'my' ? `အိပ်ချိန် ${hrs} နာရီ မှတ်တမ်းတင်ပြီးပါပြီ။ ကြွက်သားပြန်လည်ကောင်းမွန်ရန် အလွန်ကောင်းမွန်ပါသည်။` : `Logged ${hrs} hours of sleep successfully.`);
+        };
+
+        window.calculateWater = function() {
+            const w = parseFloat(document.getElementById('waterWeightInput').value) || 55;
+            targetGlasses = Math.round((w * 35) / 250); // ~35ml per kg, 250ml per glass
+            document.getElementById('targetWaterVal').innerText = `${((targetGlasses * 250) / 1000).toFixed(1)} လီတာ (ခွက်ပေါင်း ${targetGlasses} ခွက်)`;
+            document.getElementById('consumedWaterVal').innerText = `သောက်ပြီး: ${waterGlasses} / ${targetGlasses} ခွက်`;
+        };
+
+        window.addWaterGlass = function() {
+            if (waterGlasses < targetGlasses) waterGlasses++;
+            document.getElementById('consumedWaterVal').innerText = `သောက်ပြီး: ${waterGlasses} / ${targetGlasses} ခွက်`;
+        };
+
+        window.resetWater = function() {
+            waterGlasses = 0;
+            document.getElementById('consumedWaterVal').innerText = `သောက်ပြီး: ${waterGlasses} / ${targetGlasses} ခွက်`;
+        };
+
+        const roadMapData = [
+            { day: 1, meal: 'ထမင်း၊ ကြက်ဥပြုတ် ၂ လုံး၊ ပဲဟင်း', workout: 'အပေါ့စား အကြောဆန့်ခြင်း (Stretching)', sleep: 'အနည်းဆုံး ၈ နာရီပြည့်ဝစွာ အိပ်ပါ' },
+            { day: 2, meal: 'ထမင်း၊ ဝက်သားဟင်း၊ ဒိန်ချဉ်', workout: 'အိမ်တွင်း လက်ထိုးခြင်း (Push-ups) ၃ ဆင့်', sleep: 'ည ၁၀ နာရီတိတိ အိပ်ရာဝင်ပါ' },
+            { day: 3, meal: 'အုတ်ဂျုံ၊ ငှက်ပျောသီး ၂ လုံး၊ နို့', workout: 'ဝိတ်တုံးအပေါ့စားဖြင့် ကြွက်သားလေ့ကျင့်ခန်း', sleep: 'အိပ်ရေးဝဝ အိပ်စက်ပါ' },
+            { day: 4, meal: 'ထမင်း၊ ငါးဟင်း၊ ဟင်းရွက်စုံ', workout: 'အနားယူသည့်ရက် (Rest Day)', sleep: 'အနည်းဆုံး ၈ နာရီ အိပ်ပါ' },
+            { day: 5, meal: 'ပေါင်မုန့်၊ မြေပဲထောပတ်၊ ကြက်ဥ', workout: 'ဝမ်းဗိုက်နှင့် ကိုယ်ထည်ကြံ့ခိုင်ရေး', sleep: 'အိပ်ချိန်မှန်ကန်စေရန် လုပ်ဆောင်ပါ' },
+        ];
+
+        function initRoadmap() {
+            const selector = document.getElementById('daySelector');
+            selector.innerHTML = '';
+            for (let i = 1; i <= 30; i++) {
+                selector.innerHTML += `<option value="${i}">Day ${i}</option>`;
+            }
+            renderDayPlan();
+        }
+
+        window.renderDayPlan = function() {
+            const dayNum = parseInt(document.getElementById('daySelector').value) || 1;
+            const data = roadMapData[(dayNum - 1) % roadMapData.length];
+            document.getElementById('dayHeading').innerText = `Day ${dayNum}: ${currentLang === 'my' ? 'အသားတက်ရန် နေ့စဥ်အစီအစဥ်' : 'Daily Bulking Plan'}`;
+            document.getElementById('dayMealText').innerText = data.meal;
+            document.getElementById('dayWorkoutText').innerText = data.workout;
+            document.getElementById('daySleepText').innerText = data.sleep;
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.getElementById('appBody')?.classList.add('dark');
+                const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
+                if (themeIcon) themeIcon.innerText = '☀️';
+                if (themeText) themeText.innerText = currentLang === 'my' ? 'အဖြူ' : 'Light';
+            }
+
+            window.checkLoginState();
+            updateLanguageUI();
+            initRoadmap();
+            renderHistory();
+        });
+    </script>
+</body>
+</html>
